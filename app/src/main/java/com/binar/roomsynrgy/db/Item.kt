@@ -1,4 +1,4 @@
-package com.binar.roomsynrgy
+package com.binar.roomsynrgy.db
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

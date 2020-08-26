@@ -1,4 +1,4 @@
-package com.binar.roomsynrgy
+package com.binar.roomsynrgy.db
 
 import android.content.Context
 import androidx.room.Database

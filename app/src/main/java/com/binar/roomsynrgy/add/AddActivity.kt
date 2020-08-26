@@ -1,11 +1,13 @@
-package com.binar.roomsynrgy
+package com.binar.roomsynrgy.add
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.binar.roomsynrgy.db.Item
+import com.binar.roomsynrgy.db.ItemDatabase
+import com.binar.roomsynrgy.R
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class AddActivity : AppCompatActivity() {
@@ -20,7 +22,11 @@ class AddActivity : AppCompatActivity() {
         }
 
         btnSave.setOnClickListener {
-            val item = Item(null, etName.text.toString(), etQuantity.text.toString().toInt())
+            val item = Item(
+                null,
+                etName.text.toString(),
+                etQuantity.text.toString().toInt()
+            )
             GlobalScope.launch {
                 val totalSaved = db.itemDao().addItem(item)
                 runOnUiThread {

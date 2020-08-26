@@ -1,7 +1,8 @@
-package com.binar.roomsynrgy
+package com.binar.roomsynrgy.db
 
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
+import com.binar.roomsynrgy.db.Item
 
 @Dao
 interface ItemDao {

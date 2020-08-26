@@ -1,8 +1,12 @@
-package com.binar.roomsynrgy
+package com.binar.roomsynrgy.edit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import com.binar.roomsynrgy.db.Item
+import com.binar.roomsynrgy.db.ItemDatabase
+import com.binar.roomsynrgy.R
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,6 +28,10 @@ class EditActivity : AppCompatActivity() {
 
         etName.setText(item.name)
         etQuantity.setText(item.quantity.toString())
+
+        etName.addTextChangedListener {
+            Toast.makeText(this@EditActivity,"EditText Berubah", Toast.LENGTH_LONG).show()
+        }
 
         btnSave.setOnClickListener {
             item.apply {

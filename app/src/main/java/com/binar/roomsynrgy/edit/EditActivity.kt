@@ -11,9 +11,10 @@ import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class EditActivity : AppCompatActivity() {
+class EditActivity : AppCompatActivity(), EditActivityPresenter.Listener {
     private lateinit var db: ItemDatabase
     private lateinit var item: Item
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,18 +40,16 @@ class EditActivity : AppCompatActivity() {
                 quantity = etQuantity.text.toString().toInt()
             }
 
-            GlobalScope.launch {
-                val rowUpdated = db.itemDao().updateItem(item)
 
-                runOnUiThread {
-                    if(rowUpdated>0){
-                        Toast.makeText(this@EditActivity,"Data Sukses Diupdate", Toast.LENGTH_LONG).show()
-                        this@EditActivity.finish()
-                    }else{
-                        Toast.makeText(this@EditActivity,"Data Gagal Diupdate", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
         }
+    }
+
+    override fun showEditSuccess(item: Item) {
+        Toast.makeText(this@EditActivity,"Data ${item.name} Sukses Diupdate", Toast.LENGTH_LONG).show()
+        this@EditActivity.finish()
+    }
+
+    override fun showEditFailed(item: Item) {
+        Toast.makeText(this@EditActivity,"Data ${item.name} Gagal Diupdate", Toast.LENGTH_LONG).show()
     }
 }

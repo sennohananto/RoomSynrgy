@@ -2,6 +2,7 @@ package com.binar.roomsynrgy.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,14 +12,46 @@ import com.binar.roomsynrgy.db.Item
 import com.binar.roomsynrgy.db.ItemDatabase
 import com.binar.roomsynrgy.edit.EditActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), MainActivityPresenter.Listener {
     private lateinit var presenter: MainActivityPresenter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ItemDatabase.getInstance(this)?.let { presenter = MainActivityPresenter(it, this) }
         fabAdd.setOnClickListener { presenter.goToAddActivity() }
+
+        val objectJson = JSONObject()
+
+        val jsonArrayListStudent = JSONArray()
+        jsonArrayListStudent.put(
+            JSONObject()
+                .put("name","Andi")
+                .put("status","Single Parent")
+                .put("age", 45)
+        )
+
+        jsonArrayListStudent.put(
+            JSONObject()
+                .put("name","Johan")
+                .put("status","Single")
+                .put("age", 17)
+        )
+
+        objectJson.put("class","Android")
+        objectJson.put("score",90)
+        objectJson.put("allMale",true)
+        objectJson.put("listStudent",jsonArrayListStudent)
+
+
+
+        Log.d("BNR",objectJson.toString())
+
+        val result = objectJson.getJSONArray("listStudent").getJSONObject(1).getInt("age")
+
     }
 
     override fun onResume() {

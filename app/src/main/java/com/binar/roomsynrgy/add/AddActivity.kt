@@ -10,8 +10,9 @@ import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class AddActivity : AppCompatActivity() {
+class AddActivity : AppCompatActivity(), AddActivityPresenter.Listener {
     private lateinit var db: ItemDatabase
+    lateinit var presenter: AddActivityPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,7 @@ class AddActivity : AppCompatActivity() {
 
         ItemDatabase.getInstance(this)?.let {
             db = it
+            presenter = AddActivityPresenter(db, this)
         }
 
         btnSave.setOnClickListener {
@@ -27,16 +29,17 @@ class AddActivity : AppCompatActivity() {
                 etName.text.toString(),
                 etQuantity.text.toString().toInt()
             )
-            GlobalScope.launch {
-                val totalSaved = db.itemDao().addItem(item)
-                runOnUiThread {
-                    if(totalSaved>0){
-                        Toast.makeText(this@AddActivity,"Data Sukses Disimpan", Toast.LENGTH_LONG).show()
-                    }else{
-                        Toast.makeText(this@AddActivity,"Data Gagal Disimpan", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
+
+            presenter.addItem(item)
         }
+    }
+
+    override fun showAddSuccessMessage(item: Item) {
+        Toast.makeText(this@AddActivity,"Data ${item.name} Disimpan", Toast.LENGTH_LONG).show()
+        finish()
+    }
+
+    override fun showAddFailedMessage(item: Item) {
+        Toast.makeText(this@AddActivity,"Data ${item.name} Gagal Disimpan", Toast.LENGTH_LONG).show()
     }
 }

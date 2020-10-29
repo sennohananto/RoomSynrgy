@@ -2,6 +2,7 @@ package com.binar.roomsynrgy.add
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.binar.roomsynrgy.db.Item
 import com.binar.roomsynrgy.db.ItemDatabase
@@ -35,11 +36,11 @@ class AddActivity : AppCompatActivity(), AddActivityPresenter.Listener {
     }
 
     override fun showAddSuccessMessage(item: Item) {
-        Toast.makeText(this@AddActivity,"Data ${item.name} Disimpan", Toast.LENGTH_LONG).show()
+        Log.d("ROOM","Data ${item.name} Disimpan")
         finish()
     }
 
     override fun showAddFailedMessage(item: Item) {
-        Toast.makeText(this@AddActivity,"Data ${item.name} Gagal Disimpan", Toast.LENGTH_LONG).show()
+        Log.d("ROOM","Data ${item.name} Gagal Disimpan")
     }
 }

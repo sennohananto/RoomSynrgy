@@ -2,6 +2,7 @@ package com.binar.roomsynrgy.edit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.binar.roomsynrgy.db.Item
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 class EditActivity : AppCompatActivity(), EditActivityPresenter.Listener {
     private lateinit var db: ItemDatabase
     private lateinit var item: Item
+    private lateinit var presenter: EditActivityPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +25,8 @@ class EditActivity : AppCompatActivity(), EditActivityPresenter.Listener {
             db = it
         }
 
+        presenter = EditActivityPresenter(db,this)
+
         intent.getParcelableExtra<Item>("item")?.let {
             item = it
         }
@@ -30,26 +34,22 @@ class EditActivity : AppCompatActivity(), EditActivityPresenter.Listener {
         etName.setText(item.name)
         etQuantity.setText(item.quantity.toString())
 
-        etName.addTextChangedListener {
-            Toast.makeText(this@EditActivity,"EditText Berubah", Toast.LENGTH_LONG).show()
-        }
-
         btnSave.setOnClickListener {
             item.apply {
                 name = etName.text.toString()
                 quantity = etQuantity.text.toString().toInt()
             }
 
-
+            presenter.editItem(item)
         }
     }
 
     override fun showEditSuccess(item: Item) {
-        Toast.makeText(this@EditActivity,"Data ${item.name} Sukses Diupdate", Toast.LENGTH_LONG).show()
+        Log.d("ROOM","Data ${item.name} Sukses Diupdate")
         this@EditActivity.finish()
     }
 
     override fun showEditFailed(item: Item) {
-        Toast.makeText(this@EditActivity,"Data ${item.name} Gagal Diupdate", Toast.LENGTH_LONG).show()
+        Log.d("ROOM","Data ${item.name} Gagal Diupdate")
     }
 }
